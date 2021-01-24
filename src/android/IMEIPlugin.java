@@ -83,21 +83,21 @@ public class IMEIPlugin extends CordovaPlugin {
   }
 
 
-   private void getIMEI(JSONArray args) throws JSONException {
+  private void getIMEI(JSONArray args) throws JSONException {
 
         PluginResult.Status status = PluginResult.Status.OK;
         String result = "";
-
-        if (this.action.equals("get")) {
-            TelephonyManager telephonyManager = (TelephonyManager)this.cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-            result = telephonyManager.getDeviceId();
+        try {
+            if (this.action.equals("get")) {
+                TelephonyManager telephonyManager = (TelephonyManager) this.cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                result = telephonyManager.getDeviceId();
+            } else {
+                status = PluginResult.Status.INVALID_ACTION;
+            }
+            callbackContext.sendPluginResult(new PluginResult(status, result));
+        }catch (Exception e){
+            callbackContext.sendPluginResult(new PluginResult(status, ""));
         }
-        else {
-            status = PluginResult.Status.INVALID_ACTION;
-        }
-        callbackContext.sendPluginResult(new PluginResult(status, result));
-
-
-   }    
+   }  
 
 }
